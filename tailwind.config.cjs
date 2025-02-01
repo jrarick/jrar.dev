@@ -60,9 +60,8 @@ module.exports = {
         }
       },
       fontFamily: {
-        mono: ["IBM Plex Mono", "monospace"],
+        mono: ["'Exo 2'", "monospace"],
       },
-
       typography: {
         DEFAULT: {
           css: {
