@@ -106,12 +106,12 @@ function Hero() {
         <div className="flex flex-col items-center">
           <TextEffect
             delay={0.8}
-            className="text-muted max-w-md"
+            className="text-muted max-w-lg font-medium sm:text-lg"
             per="char"
             variants={subtitleVariants}
           >
             I build websites and web apps with React, Next.js, Remix, Python,
-            ect.
+            ect. I also write stuff on my blog.
           </TextEffect>
         </div>
       </div>
