@@ -2,7 +2,24 @@ import type { Route } from './+types/home'
 import '../styles/hero.css'
 import { InView } from '~/components/motion/in-view'
 import { TextEffect } from '~/components/motion/text-effect'
-import { Link } from 'react-router'
+import { InfiniteSlider } from '~/components/motion/infinite-slider'
+import {
+  NextjsIcon,
+  GsapIcon,
+  ReactIcon,
+  ReactRouterIcon,
+  SanityIcon,
+  NodejsIcon,
+  SupabaseIcon,
+  FigmaIcon,
+  MotionIcon,
+  AlgoliaIcon,
+  TailwindIcon,
+  D3jsIcon,
+  ViteIcon,
+  PlaywrightIcon,
+  PythonIcon,
+} from '~/assets/slider-icons'
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -12,7 +29,12 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  return <Hero />
+  return (
+    <>
+      <Hero />
+      <TechnologiesSlider />
+    </>
+  )
 }
 
 function Hero() {
@@ -73,7 +95,7 @@ function Hero() {
         >
           <h1
             id="hero-headline"
-            className="relative mt-24 h-28 text-3xl *:absolute *:w-full *:text-center *:font-bold motion-safe:animate-[jerkwhole_8s_infinite] *:lg:text-5xl *:xl:text-6xl"
+            className="relative mt-12 h-28 text-3xl *:absolute *:w-full *:text-center *:font-bold motion-safe:animate-[jerkwhole_8s_infinite] sm:mt-24 *:lg:text-5xl *:xl:text-6xl"
           >
             <span
               className="-ml-0.5 text-red-600 blur-[2px] select-none motion-safe:animate-[jerk_50ms_infinite,_blur_30ms_infinite]"
@@ -107,15 +129,38 @@ function Hero() {
         <div className="flex flex-col items-center">
           <TextEffect
             delay={0.8}
-            className="text-muted max-w-lg pt-24 text-center font-medium sm:text-lg"
+            className="text-muted max-w-lg px-4 pt-12 text-center font-medium sm:pt-24 sm:text-lg md:text-xl lg:max-w-xl lg:text-2xl"
             per="char"
             variants={subtitleVariants}
           >
-            I build websites and web apps with React, Next.js, Remix, Python,
-            ect. I also write stuff on my blog.
+            {`I build websites and web apps with Next.js, Remix, Python, Node ect. I also write stuff on my blog.`}
           </TextEffect>
         </div>
       </div>
+    </div>
+  )
+}
+
+function TechnologiesSlider() {
+  return (
+    <div className="py-64">
+      <InfiniteSlider duration={50} gap={150} reverse={true}>
+        <ReactIcon />
+        <GsapIcon />
+        <ReactRouterIcon />
+        <NextjsIcon />
+        <SanityIcon />
+        <NodejsIcon />
+        <SupabaseIcon />
+        <FigmaIcon />
+        <MotionIcon />
+        <AlgoliaIcon />
+        <TailwindIcon />
+        <D3jsIcon />
+        <ViteIcon />
+        <PlaywrightIcon />
+        <PythonIcon />
+      </InfiniteSlider>
     </div>
   )
 }

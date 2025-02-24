@@ -76,21 +76,44 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   )
 }
 
+const navLinks = [
+  { name: 'About', href: '/about' },
+  { name: 'Projects', href: '/projects' },
+  { name: 'Blog', href: '/blog' },
+]
+
 function Header() {
   return (
     <header>
       <nav
         aria-label="Global"
-        className="mx-auto flex max-w-3xl items-center justify-between p-6 lg:px-8"
+        className="mx-auto flex max-w-3xl items-center justify-between px-4 py-6 sm:p-6 lg:px-8"
       >
         <div className="flex lg:flex-1">
           <Link to="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
-            <span className="text-accent text-2xl font-semibold">JRAR.DEV</span>
+            <span className="text-accent text-xl font-semibold sm:text-2xl">
+              JRAR.DEV
+            </span>
           </Link>
         </div>
-        <div className="flex lg:gap-x-12">
-          <Link to="/blog" className="text-accent text-base font-semibold">
+        <div className="flex gap-x-4 lg:gap-x-8">
+          <Link
+            to="/about"
+            className="text-accent text-xs font-semibold sm:text-sm"
+          >
+            About
+          </Link>
+          <Link
+            to="/projects"
+            className="text-accent text-xs font-semibold sm:text-sm"
+          >
+            Projects
+          </Link>
+          <Link
+            to="/blog"
+            className="text-accent text-xs font-semibold sm:text-sm"
+          >
             Blog
           </Link>
         </div>

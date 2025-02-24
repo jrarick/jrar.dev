@@ -11,7 +11,7 @@
 .dark {
   --fill: oklch(13.79% 0.025 71.38);
   --default: var(--color-neutral-50);
-  --muted: oklch(--color-neutral-200);
+  --muted: var(--color-neutral-400);
   --accent: oklch(73.34% 0.185189 53.4055);
 }
 
