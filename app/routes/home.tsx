@@ -2,6 +2,7 @@ import type { Route } from './+types/home'
 import '../styles/hero.css'
 import { InView } from '~/components/motion/in-view'
 import { TextEffect } from '~/components/motion/text-effect'
+import { Link } from 'react-router'
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -37,7 +38,7 @@ function Hero() {
       hidden: { opacity: 0 },
       visible: {
         opacity: 1,
-        transition: { staggerChildren: 0.02 },
+        transition: { staggerChildren: 0.015 },
       },
     },
     item: {
@@ -72,7 +73,7 @@ function Hero() {
         >
           <h1
             id="hero-headline"
-            className="relative h-28 text-3xl *:absolute *:w-full *:text-center *:font-bold motion-safe:animate-[jerkwhole_8s_infinite] *:lg:text-5xl *:xl:text-6xl"
+            className="relative mt-24 h-28 text-3xl *:absolute *:w-full *:text-center *:font-bold motion-safe:animate-[jerkwhole_8s_infinite] *:lg:text-5xl *:xl:text-6xl"
           >
             <span
               className="-ml-0.5 text-red-600 blur-[2px] select-none motion-safe:animate-[jerk_50ms_infinite,_blur_30ms_infinite]"
@@ -106,7 +107,7 @@ function Hero() {
         <div className="flex flex-col items-center">
           <TextEffect
             delay={0.8}
-            className="text-muted max-w-lg font-medium sm:text-lg"
+            className="text-muted max-w-lg pt-24 text-center font-medium sm:text-lg"
             per="char"
             variants={subtitleVariants}
           >

@@ -27,12 +27,12 @@ export default function Page({ loaderData }: Route.ComponentProps) {
   return (
     <div className="prose dark:prose-invert prose-neutral mx-auto py-12">
       <h1>{frontmatter.title}</h1>
-      <p>
-        Published:{' '}
-        <time dateTime={datePublished} className="text-lg">
-          {new Date(datePublished).toLocaleDateString()}
-        </time>
+      <p className="text-base font-semibold text-stone-50">
+        {frontmatter.subtitle}
       </p>
+      <time dateTime={datePublished} className="text-lg">
+        {new Date(datePublished).toLocaleDateString()}
+      </time>
       <hr />
       <Component
         components={{

@@ -1,5 +1,6 @@
 import {
   isRouteErrorResponse,
+  Link,
   Links,
   Meta,
   Outlet,
@@ -32,7 +33,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="bg-fill font-mono text-base">
+      <body className="bg-fill text-default font-mono">
+        <Header />
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -71,5 +73,28 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         </pre>
       )}
     </main>
+  )
+}
+
+function Header() {
+  return (
+    <header>
+      <nav
+        aria-label="Global"
+        className="mx-auto flex max-w-3xl items-center justify-between p-6 lg:px-8"
+      >
+        <div className="flex lg:flex-1">
+          <Link to="/" className="-m-1.5 p-1.5">
+            <span className="sr-only">Your Company</span>
+            <span className="text-accent text-2xl font-semibold">JRAR.DEV</span>
+          </Link>
+        </div>
+        <div className="flex lg:gap-x-12">
+          <Link to="/blog" className="text-accent text-base font-semibold">
+            Blog
+          </Link>
+        </div>
+      </nav>
+    </header>
   )
 }

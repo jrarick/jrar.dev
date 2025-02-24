@@ -1,0 +1,40 @@
+---
+title: React Server Components Were a Mistake
+subtitle: many people have been saying this or at least I have
+datePublished: 2025-02-23
+category: webdev
+---
+
+React Server Components, or RSCs for short, were introduced into the world in React 18 as a canary release and then in a stable release in React 19. They were highly anticipated for years and for good reason. Finally you could unshackle yourself from those awful `useEffects` you were using for data fetching and get rid of that unnecessary API endpoint acting as a middleman. Just fetch your data directly in your component on the server and you're done. Need to post a form submission to the server? Just slap a server action directly in your form component; it's that easy. Huge win honestly.
+
+Not only that but RSCs are really the perfect "portable" paradigm for modern React. Thanks to JSX, RSCs, and the ubiquity of Tailwind you can have your RSC tell the entire story of your UI. Now your markup, styles, interactivity (sort of, we'll get to that later), and data fetching are all colocated one place. You can share these full-stack RSCs between projects and they just work. This helps LLMs too because they're really good at generating boilerplate slop and RSCs are, in a way, the ultimate UI biolerplate.
+
+So what's the problem? **RSCs are amazing in theory but a really confusing and messy paradigm in practice.** Even the name itself is confusing. Didn't we already have "server components" in React already with server side rendering frameworks like Next.js and Remix? And why are the React docs telling me I can use [server components without a server](https://react.dev/reference/rsc/server-components#server-components-without-a-server)? They probably should have been called something else but that's only the start of the problems which include:
+
+## Those use client and use server directives
+
+RSCs prevent you from using those helpful React hooks you've become accustomed to like `useState`, `useContext`, `useEffect` since they opt out of the normal React render lifecycle; they only render once. You can opt out of this with a "use client" at the top of your component and now your hooks work again (so called "client" components are still rendered on the server in SSR environments by the way).
+
+So now you have two completely different mental models of React components. And if you need to run a server action you'll need prefix the function with a "use server" directive, which needs to be used in both server and client components. So why not name it "use action" or "use endpoint" if I'm already using a so-called server component?
+
+Annoying naming conventions aside, the client/server directives undermine the next level of composability and portability that RSCs were supposed to bring to React. A simple boilerplate form has a great authoring experience with React server components and server actions. But what if we want to progressively enhance the form with some of those shiny new React 19 hooks for dealing with forms like `useActionState` or `useFormStatus`?
+
+Well those only work in client components so you'll need to deoptimize your whole form component and turn it back into a client component. If you don't want to do that you'll need to extract your buttons or inputs that use those hooks into their own client components which you can import into your server component. **Oops, now your previously closely colocated form is broken up into 3+ different files.**
+
+And what if you're doing complicated work in the real world and not those nice little tutorials on nextjs dot org? You start adding error handling, optimistic UI, conditional data fetching, you'll likely find yourself with a bunch of client and server components interweaved with each other 10+ layers deep. You also need to make sure you aren't unintentionally deoptimizing your server components that inherit from client components. This arent't trivial concerns either; if you import a server component into a client component instead of passing it as props you've just converted that component tree into all client components.
+
+That nice modular and portable paradigm you were promised was a mirage. You might be tempted to abandon the whole server/client dichotomy just make the entire app one big client component and call it a day.
+
+## The bundle size spirals
+
+So RSCs will help significantly reduce the initial amount of data being sent to the client on first load but as your users continue to use the app or website, the amount of data will contiue to grow and grow. Server components stream both the HTML and the RSC payload representation of the HTML to the client so the larger your routes the larger this duplication problem becomes. Blazing fast initial load times are great but there are other ways to accomplish that without the trade-offs that come with RSCs.
+
+## Styling is too opinionated
+
+"Just use Tailwind". I mean yeah, I probably will honestly but it seems like a JavaScript view library shouldn't really be forcing your hand in terms of styling solutions. CSS-in-JS solutions like [styled-components just straight up won't work with RSCs](https://github.com/styled-components/styled-components/issues/4025) since they use React hooks under the hood. So it's either convert everything to a client component or find a different styling solution. Not great.
+
+## RSCs aren't really React and they're not really HTML
+
+Like mentioned earlier, RSCs don't operate the way we've become familiar with pre React 18. Sure they have props that can be passed in but they don't have a render lifecycle and they don't have hooks. And since they don't operate in a browser environment, you can't make use of browser APIs like you would with plain HTML. So they operate in a strange place where you can fetch and send data and create static UIs but not much else. I don't know about you guys but generally I do more than that in my web apps so that makes their utility pretty limited.
+
+Debugging RSCs can be a pain too. This could improve over time as the ecosystem matures but often you'll get cryptic errors about with no hint about where the error is stemming from. Where did you accidently import a hook into a server component? Figure it out yourself.

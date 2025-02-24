@@ -3,15 +3,15 @@
 
 :root {
   --fill: oklch(98.52% 0.0192 90.54);
-  --base: oklch(13.79% 0.025 71.38);
+  --default: oklch(13.79% 0.025 71.38);
   --muted: oklch(20.25% 0.025 71.38);
   --accent: oklch(60.78% 0.1616 49.32);
 }
 
 .dark {
   --fill: oklch(13.79% 0.025 71.38);
-  --base: oklch(97.94% 0.0133 67.32);
-  --muted: oklch(82.92% 0.0133 67.32);
+  --default: var(--color-neutral-50);
+  --muted: oklch(--color-neutral-200);
   --accent: oklch(73.34% 0.185189 53.4055);
 }
 
@@ -21,7 +21,7 @@
     'Liberation Mono', 'Courier New', monospace;
 
   --color-fill: var(--fill);
-  --color-base: var(--base);
+  --color-default: var(--default);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
 }
