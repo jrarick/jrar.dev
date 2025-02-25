@@ -11,11 +11,13 @@ export async function loader({}: Route.LoaderArgs) {
 }
 
 export default function Blog({ loaderData }: Route.ComponentProps) {
+  const { articles } = loaderData
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-24 sm:px-8">
       <h1 className="text-accent text-3xl font-bold">Blog Archive</h1>
       <div className="space-y-4 py-4">
-        {loaderData.articles.map((article) => (
+        {articles.map((article) => (
           <article
             key={article.slug}
             className="bg-fill relative flex flex-col space-y-2 rounded-md border border-neutral-800 p-5 transition-colors hover:bg-white/5"
@@ -29,7 +31,7 @@ export default function Blog({ loaderData }: Route.ComponentProps) {
             </Link>
             <p className="text-muted text-sm">{article.subtitle}</p>
             <time dateTime={article.datePublished} className="text-muted">
-              {new Date(article.datePublished).toLocaleDateString()}
+              {new Date(article.datePublished + ' CST').toLocaleDateString()}
             </time>
           </article>
         ))}

@@ -21,19 +21,24 @@ export const meta: Route.MetaFunction = ({ data }) => {
 }
 
 export default function Page({ loaderData }: Route.ComponentProps) {
-  const { code, frontmatter } = loaderData
-  const { datePublished } = frontmatter
+  const {
+    code,
+    frontmatter: { title, subtitle, datePublished },
+  } = loaderData
 
   const Component = useMemo(() => getMDXComponent(code), [code])
+
   return (
     <div className="overflow-auto px-4 py-12">
       <article className="prose prose-sm sm:prose-base dark:prose-invert prose-neutral mx-auto">
-        <h1>{frontmatter.title}</h1>
-        <p className="text-muted text-base font-semibold">
-          {frontmatter.subtitle}
-        </p>
+        <h1>{title}</h1>
+        <p className="text-muted text-base font-semibold">{subtitle}</p>
         <time dateTime={datePublished} className="text-muted text-lg">
-          {new Date(datePublished).toLocaleDateString()}
+          {new Date(datePublished + ' CST').toLocaleDateString(undefined, {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
         </time>
         <hr className="border-accent/50" />
         <Component
