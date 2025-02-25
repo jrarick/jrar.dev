@@ -22,6 +22,13 @@ import nodejsIcon from '~/assets/nodejs-icon.svg?url'
 import tanstackIcon from '~/assets/tanstack-icon.svg?url'
 import prismaIcon from '~/assets/prisma-icon.svg?url'
 import typescriptIcon from '~/assets/typescript-icon.svg?url'
+import {
+  motion,
+  useMotionTemplate,
+  useScroll,
+  useTransform,
+} from 'motion/react'
+import { useRef } from 'react'
 
 const icons = [
   { url: d3Icon, alt: 'D3.js' },
@@ -57,6 +64,7 @@ export default function Home() {
     <>
       <Hero />
       <TechnologiesSlider />
+      <div className="h-dvh" />
     </>
   )
 }
@@ -166,11 +174,24 @@ function Hero() {
 }
 
 function TechnologiesSlider() {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  })
+
+  const percentage = useTransform(scrollYProgress, [0, 1], [0, 100])
+
   return (
-    <div className="relative mx-auto max-w-7xl py-64">
-      <h2 className="text-accent pb-32 text-center text-3xl font-semibold md:text-5xl">
+    <div className="relative mx-auto max-w-7xl py-64" ref={ref}>
+      <motion.h2
+        className="bg-[linear-gradient(-60deg,rgba(0,0,0,0)33.3%,rgba(0,0,0,1)50%)] bg-[length:500%_100%] bg-clip-text pb-32 text-center text-3xl font-semibold [-webkit-text-fill-color:transparent] md:text-5xl dark:bg-[linear-gradient(-60deg,rgba(255,129,0,0)33.3%,rgba(255,129,0,1)66.7%)]"
+        style={{
+          backgroundPositionX: useMotionTemplate`calc(100% - ${percentage}%)`,
+        }}
+      >
         The Tools I Use
-      </h2>
+      </motion.h2>
       <InfiniteSlider duration={20} gap={200}>
         {icons.map((icon) => (
           <img className="h-16" src={icon.url} alt={icon.alt} />
