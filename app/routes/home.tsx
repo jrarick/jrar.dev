@@ -3,23 +3,47 @@ import '../styles/hero.css'
 import { InView } from '~/components/motion/in-view'
 import { TextEffect } from '~/components/motion/text-effect'
 import { InfiniteSlider } from '~/components/motion/infinite-slider'
-import {
-  NextjsIcon,
-  GsapIcon,
-  ReactIcon,
-  ReactRouterIcon,
-  SanityIcon,
-  NodejsIcon,
-  SupabaseIcon,
-  FigmaIcon,
-  MotionIcon,
-  AlgoliaIcon,
-  TailwindIcon,
-  D3jsIcon,
-  ViteIcon,
-  PlaywrightIcon,
-  PythonIcon,
-} from '~/assets/slider-icons'
+import d3Icon from '~/assets/d3-icon.svg?url'
+import figmaIcon from '~/assets/figma-icon.svg?url'
+import gsapIcon from '~/assets/gsap-icon.svg?url'
+import nextjsIcon from '~/assets/nextjs-icon.svg?url'
+import playwrightIcon from '~/assets/playwright-icon.svg?url'
+import postgresIcon from '~/assets/postgres-icon.svg?url'
+import pythonIcon from '~/assets/python-icon.svg?url'
+import reactIcon from '~/assets/react-icon.svg?url'
+import reactRouterIcon from '~/assets/react-router-icon.svg?url'
+import sanityIcon from '~/assets/sanity-icon.svg?url'
+import supabaseIcon from '~/assets/supabase-icon.svg?url'
+import tailwindIcon from '~/assets/tailwind-icon.svg?url'
+import viteIcon from '~/assets/vite-icon.svg?url'
+import remixIcon from '~/assets/remix-icon.svg?url'
+import motionIcon from '~/assets/motion-icon.svg?url'
+import nodejsIcon from '~/assets/nodejs-icon.svg?url'
+import tanstackIcon from '~/assets/tanstack-icon.svg?url'
+import prismaIcon from '~/assets/prisma-icon.svg?url'
+import typescriptIcon from '~/assets/typescript-icon.svg?url'
+
+const icons = [
+  { url: d3Icon, alt: 'D3.js' },
+  { url: figmaIcon, alt: 'Figma' },
+  { url: gsapIcon, alt: 'GSAP' },
+  { url: nextjsIcon, alt: 'Next.js' },
+  { url: playwrightIcon, alt: 'Playwright' },
+  { url: postgresIcon, alt: 'Postgres' },
+  { url: pythonIcon, alt: 'Python' },
+  { url: reactIcon, alt: 'React' },
+  { url: reactRouterIcon, alt: 'React Router' },
+  { url: sanityIcon, alt: 'Sanity' },
+  { url: supabaseIcon, alt: 'Supabase' },
+  { url: tailwindIcon, alt: 'Tailwind' },
+  { url: viteIcon, alt: 'Vite' },
+  { url: remixIcon, alt: 'Remix' },
+  { url: motionIcon, alt: 'Framer Motion' },
+  { url: nodejsIcon, alt: 'Node.js' },
+  { url: tanstackIcon, alt: 'Tanstack' },
+  { url: prismaIcon, alt: 'Prisma' },
+  { url: typescriptIcon, alt: 'TypeScript' },
+]
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -81,7 +105,7 @@ function Hero() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-20">
+    <div className="mx-auto max-w-7xl px-4 py-24">
       <div className="overflow-hidden">
         <InView
           variants={titleVaraints}
@@ -129,7 +153,7 @@ function Hero() {
         <div className="flex flex-col items-center">
           <TextEffect
             delay={0.8}
-            className="text-muted max-w-lg px-4 pt-12 text-center font-medium sm:pt-24 sm:text-lg md:text-xl lg:max-w-xl lg:text-2xl"
+            className="max-w-lg px-4 pt-12 text-center font-medium text-sky-100 sm:pt-24 sm:text-lg md:text-xl lg:max-w-xl lg:text-2xl"
             per="char"
             variants={subtitleVariants}
           >
@@ -143,24 +167,16 @@ function Hero() {
 
 function TechnologiesSlider() {
   return (
-    <div className="py-64">
-      <InfiniteSlider duration={50} gap={150} reverse={true}>
-        <ReactIcon />
-        <GsapIcon />
-        <ReactRouterIcon />
-        <NextjsIcon />
-        <SanityIcon />
-        <NodejsIcon />
-        <SupabaseIcon />
-        <FigmaIcon />
-        <MotionIcon />
-        <AlgoliaIcon />
-        <TailwindIcon />
-        <D3jsIcon />
-        <ViteIcon />
-        <PlaywrightIcon />
-        <PythonIcon />
+    <div className="relative mx-auto max-w-7xl py-64">
+      <h2 className="text-accent pb-32 text-center text-3xl font-semibold md:text-5xl">
+        The Tools I Use
+      </h2>
+      <InfiniteSlider duration={20} gap={200}>
+        {icons.map((icon) => (
+          <img className="h-16" src={icon.url} alt={icon.alt} />
+        ))}
       </InfiniteSlider>
+      <div className="to-fill from-fill absolute inset-0 z-10 hidden bg-gradient-to-r from-10% via-transparent via-50% to-90% sm:block" />
     </div>
   )
 }

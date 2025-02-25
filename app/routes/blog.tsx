@@ -18,7 +18,7 @@ export default function Blog({ loaderData }: Route.ComponentProps) {
         {loaderData.articles.map((article) => (
           <article
             key={article.slug}
-            className="bg-fill relative flex flex-col space-y-1 rounded-md border border-neutral-800 p-5 transition-colors hover:bg-white/5"
+            className="bg-fill relative flex flex-col space-y-2 rounded-md border border-neutral-800 p-5 transition-colors hover:bg-white/5"
           >
             <div className="bg-accent text-fill w-min rounded-md px-2.5 py-1 text-xs">
               {article.category}
