@@ -28,7 +28,11 @@ export default function Blog({ loaderData }: Route.ComponentProps) {
             <div className="bg-accent text-fill w-min rounded-md px-2.5 py-1 text-xs">
               {article.category}
             </div>
-            <Link to={`/blog/${article.slug}`} className="text-xl">
+            <Link
+              to={`/blog/${article.slug}`}
+              className="text-xl"
+              prefetch="viewport"
+            >
               {article.title}
               <span className="absolute inset-0" />
             </Link>

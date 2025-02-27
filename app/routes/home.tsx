@@ -265,7 +265,11 @@ function Projects({ projects }: { projects: Project[] }) {
                   key={project.slug}
                   className="bg-fill hover:border-accent/50 hover:shadow-accent/20 relative flex flex-col space-y-2 rounded-md border border-neutral-800 to-80% p-5 shadow-md shadow-transparent transition-colors hover:bg-gradient-to-r hover:from-white/5"
                 >
-                  <Link to={`/work/${project.slug}`} className="text-xl">
+                  <Link
+                    to={`/work/${project.slug}`}
+                    className="text-xl"
+                    prefetch="viewport"
+                  >
                     {project.title}
                     <span className="absolute inset-0" />
                   </Link>
@@ -276,6 +280,7 @@ function Projects({ projects }: { projects: Project[] }) {
             <div className="border-accent/50 mt-8 flex border-t pt-8">
               <Link
                 to="/work"
+                prefetch="intent"
                 className="text-accent flex items-center space-x-2 text-sm/6 font-semibold"
               >
                 <span>See all work</span>

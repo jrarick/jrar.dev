@@ -25,7 +25,11 @@ export default function Work({ loaderData }: Route.ComponentProps) {
             key={project.slug}
             className="bg-fill hover:border-accent/50 hover:shadow-accent/20 relative flex flex-col space-y-2 rounded-md border border-neutral-800 to-80% p-5 shadow-md shadow-transparent transition-colors hover:bg-gradient-to-r hover:from-white/5"
           >
-            <Link to={`/work/${project.slug}`} className="text-xl">
+            <Link
+              to={`/work/${project.slug}`}
+              className="text-xl"
+              prefetch="viewport"
+            >
               {project.title}
               <span className="absolute inset-0" />
             </Link>

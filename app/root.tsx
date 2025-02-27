@@ -105,6 +105,7 @@ function Header() {
             <Link
               key={link.name}
               to={link.href}
+              prefetch="intent"
               className="text-accent text-xs font-semibold sm:text-sm"
             >
               {link.name}
