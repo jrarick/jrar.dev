@@ -9,7 +9,7 @@ import {
 } from 'react-router'
 
 import type { Route } from './+types/root'
-import './app.css'
+import './styles/app.css'
 import { TextScramble } from './components/motion/text-scramble'
 import { useState } from 'react'
 
@@ -35,7 +35,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="bg-fill text-default font-mono">
+      <body className="bg-fill text-default relative font-mono">
         <Header />
         {children}
         <Footer />
@@ -81,7 +81,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
 const navLinks = [
   { name: 'About', href: '/about' },
-  { name: 'Projects', href: '/projects' },
+  { name: 'Work', href: '/work' },
   { name: 'Blog', href: '/blog' },
 ]
 
@@ -101,24 +101,15 @@ function Header() {
           </Link>
         </div>
         <div className="flex gap-x-4 lg:gap-x-8">
-          <Link
-            to="/about"
-            className="text-accent text-xs font-semibold sm:text-sm"
-          >
-            About
-          </Link>
-          <Link
-            to="/projects"
-            className="text-accent text-xs font-semibold sm:text-sm"
-          >
-            Projects
-          </Link>
-          <Link
-            to="/blog"
-            className="text-accent text-xs font-semibold sm:text-sm"
-          >
-            Blog
-          </Link>
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.href}
+              className="text-accent text-xs font-semibold sm:text-sm"
+            >
+              {link.name}
+            </Link>
+          ))}
         </div>
       </nav>
     </header>
@@ -130,7 +121,7 @@ export function Footer() {
 
   return (
     <footer className="border-accent/50 border-t">
-      <div className="mx-auto flex max-w-7xl flex-col justify-center px-6 py-24 md:flex-row md:justify-between md:px-8">
+      <div className="mx-auto flex max-w-4xl flex-col justify-center px-6 py-24 md:flex-row md:justify-between md:px-8">
         <TextScramble
           className="text-default text-sm"
           as="p"

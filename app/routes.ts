@@ -11,4 +11,9 @@ export default [
     index('routes/blog.tsx'),
     route(':slug', 'routes/blog-post.tsx'),
   ]),
+  ...prefix('work', [
+    index('routes/work.tsx'),
+    route(':slug', 'routes/project.tsx'),
+  ]),
+  route('about', 'routes/about.tsx'),
 ] satisfies RouteConfig

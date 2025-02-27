@@ -1,14 +1,17 @@
-import { listAllArticles } from '~/blog.server'
+import { listAllArticles } from '~/lib/blog.server'
 import type { Route } from './+types/blog'
 import { Link } from 'react-router'
 
 export async function loader({}: Route.LoaderArgs) {
   const articles = await listAllArticles()
 
-  return {
-    articles,
-  }
+  return { articles }
 }
+
+export const meta: Route.MetaFunction = () => [
+  { title: 'Blog Archive' },
+  { name: 'description', content: 'Check out recent blog posts' },
+]
 
 export default function Blog({ loaderData }: Route.ComponentProps) {
   const { articles } = loaderData
@@ -20,7 +23,7 @@ export default function Blog({ loaderData }: Route.ComponentProps) {
         {articles.map((article) => (
           <article
             key={article.slug}
-            className="bg-fill relative flex flex-col space-y-2 rounded-md border border-neutral-800 to-80% p-5 transition-colors hover:bg-gradient-to-r hover:from-white/5"
+            className="bg-fill hover:border-accent/50 relative flex flex-col space-y-2 rounded-md border border-neutral-800 to-80% p-5 transition-colors hover:bg-gradient-to-r hover:from-white/5"
           >
             <div className="bg-accent text-fill w-min rounded-md px-2.5 py-1 text-xs">
               {article.category}

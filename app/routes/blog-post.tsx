@@ -1,5 +1,5 @@
 import { getMDXComponent } from 'mdx-bundler/client/index.js'
-import { bundlePost } from '~/blog.server'
+import { bundlePost } from '~/lib/blog.server'
 import type { Route } from './+types/blog-post'
 import { useMemo } from 'react'
 
@@ -8,19 +8,18 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 }
 
 export const meta: Route.MetaFunction = ({ data }) => {
-  const { title, subtitle, datePublished, category } = data.frontmatter
+  const { title, subtitle } = data.frontmatter
 
   return [
+    { title },
     {
-      title,
-      subtitle,
-      datePublished,
-      category,
+      name: 'description',
+      content: subtitle,
     },
   ]
 }
 
-export default function Page({ loaderData }: Route.ComponentProps) {
+export default function BlogPost({ loaderData }: Route.ComponentProps) {
   const {
     code,
     frontmatter: { title, subtitle, datePublished },
@@ -58,7 +57,6 @@ export default function Page({ loaderData }: Route.ComponentProps) {
             ),
           }}
         />
-        <hr className="border-accent/50" />
       </article>
     </div>
   )

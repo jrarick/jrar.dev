@@ -29,6 +29,7 @@ import {
   useTransform,
 } from 'motion/react'
 import { useRef } from 'react'
+import PixelTrail from '~/components/motion/pixel-trail'
 
 const icons = [
   { url: d3Icon, alt: 'D3.js' },
@@ -64,7 +65,7 @@ export default function Home() {
     <>
       <Hero />
       <TechnologiesSlider />
-      <div className="h-dvh" />
+      <Projects />
     </>
   )
 }
@@ -113,14 +114,16 @@ function Hero() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-24">
+    <div className="relative mx-auto max-w-7xl px-4 py-24">
+      <div className="absolute inset-0 z-[1]">
+        <PixelTrail pixelSize={20} delay={130} pixelClassName="bg-accent/10" />
+      </div>
       <div className="overflow-hidden">
         <InView
           variants={titleVaraints}
           viewOptions={{ margin: '0px 0px -200px 0px' }}
           transition={{
-            type: 'spring',
-            duration: 0.5,
+            duration: 0.2,
             delay: 0.2,
             ease: 'easeOut',
           }}
@@ -183,21 +186,32 @@ function TechnologiesSlider() {
   const percentage = useTransform(scrollYProgress, [0, 1], [0, 100])
 
   return (
-    <div className="relative mx-auto max-w-7xl py-64" ref={ref}>
-      <motion.h2
-        className="bg-[linear-gradient(-60deg,rgba(0,0,0,0)33.3%,rgba(0,0,0,1)50%)] bg-[length:500%_100%] bg-clip-text pb-32 text-center text-3xl font-semibold [-webkit-text-fill-color:transparent] md:text-5xl dark:bg-[linear-gradient(-60deg,rgba(255,129,0,0)33.3%,rgba(255,129,0,1)66.7%)]"
-        style={{
-          backgroundPositionX: useMotionTemplate`calc(100% - ${percentage}%)`,
-        }}
-      >
-        The Tools I Use
-      </motion.h2>
-      <InfiniteSlider duration={20} gap={200}>
-        {icons.map((icon) => (
-          <img className="h-16" src={icon.url} alt={icon.alt} />
-        ))}
-      </InfiniteSlider>
-      <div className="to-fill from-fill absolute inset-0 z-10 hidden bg-gradient-to-r from-10% via-transparent via-50% to-90% sm:block" />
+    <div className="py-36">
+      <div className="relative mx-auto max-w-7xl py-24" ref={ref}>
+        <motion.h2
+          className="bg-[linear-gradient(-60deg,rgba(0,0,0,0)33.3%,rgba(0,0,0,1)50%)] bg-[length:500%_100%] bg-clip-text pb-32 text-center text-3xl font-semibold [-webkit-text-fill-color:transparent] md:text-5xl dark:bg-[linear-gradient(-60deg,rgba(255,129,0,0)33.3%,rgba(255,129,0,1)66.7%)]"
+          style={{
+            backgroundPositionX: useMotionTemplate`calc(100% - ${percentage}%)`,
+          }}
+        >
+          The Tools I Use
+        </motion.h2>
+        <InfiniteSlider duration={15} gap={200}>
+          {icons.map((icon) => (
+            <img
+              key={icon.alt}
+              className="h-16"
+              src={icon.url}
+              alt={icon.alt}
+            />
+          ))}
+        </InfiniteSlider>
+        <div className="to-fill from-fill absolute inset-0 z-10 hidden bg-gradient-to-r from-10% via-transparent via-50% to-90% sm:block" />
+      </div>
     </div>
   )
+}
+
+function Projects() {
+  return null
 }
