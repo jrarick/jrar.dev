@@ -27,7 +27,7 @@ export default function Project({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="overflow-auto px-4 py-12">
-      <article className="prose prose-sm sm:prose-base dark:prose-invert prose-neutral mx-auto">
+      <article className="prose prose-sm sm:prose-base prose-invert mx-auto">
         <Link
           to="/work"
           className="not-prose text-accent mb-8 flex items-center space-x-2"

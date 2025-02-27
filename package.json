@@ -26,8 +26,7 @@
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^5.0.0",
     "tailwind-merge": "^3.0.2",
-    "uuid": "^11.1.0",
-    "wrangler": "^3.110.0"
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@react-router/dev": "^7.2.0",

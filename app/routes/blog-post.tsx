@@ -29,7 +29,7 @@ export default function BlogPost({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="overflow-auto px-4 py-12">
-      <article className="prose prose-sm sm:prose-base dark:prose-invert prose-neutral mx-auto">
+      <article className="prose prose-sm sm:prose-base prose-invert mx-auto">
         <h1>{title}</h1>
         <p className="text-muted text-base font-semibold">{subtitle}</p>
         <time dateTime={datePublished} className="text-muted text-lg">

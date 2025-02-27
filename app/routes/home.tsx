@@ -165,11 +165,11 @@ function Hero() {
             >
               {headline}
             </span>
-            <span className="text-black blur-[1px] motion-safe:animate-[jerk_50ms_infinite,_blur_30ms_infinite] dark:text-white">
+            <span className="text-white blur-[1px] motion-safe:animate-[jerk_50ms_infinite,_blur_30ms_infinite]">
               {headline}
             </span>
             <span
-              className="text-black/40 blur-lg select-none motion-safe:animate-[jerk_50ms_infinite,_blur_30ms_infinite] dark:text-white/40"
+              className="text-white/40 blur-lg select-none motion-safe:animate-[jerk_50ms_infinite,_blur_30ms_infinite]"
               aria-hidden="true"
             >
               {headline}
@@ -179,7 +179,7 @@ function Hero() {
         <div className="flex flex-col items-center">
           <TextEffect
             delay={0.8}
-            className="max-w-lg px-4 pt-12 text-center font-medium text-sky-100 sm:pt-24 sm:text-lg md:text-xl lg:max-w-xl lg:text-2xl"
+            className="max-w-lg px-4 pt-12 text-center font-medium text-sky-100 [text-shadow:var(--color-sky-100)_0px_0px_5px] sm:pt-24 sm:text-lg md:text-xl lg:max-w-xl lg:text-2xl"
             per="char"
             variants={subtitleVariants}
           >
@@ -204,7 +204,7 @@ function TechnologiesSlider() {
     <div className="py-36">
       <div className="relative mx-auto max-w-7xl py-24" ref={ref}>
         <motion.h2
-          className="bg-[linear-gradient(-60deg,rgba(0,0,0,0)33.3%,rgba(0,0,0,1)50%)] bg-[length:500%_100%] bg-clip-text pb-32 text-center text-3xl font-semibold [-webkit-text-fill-color:transparent] md:text-5xl dark:bg-[linear-gradient(-60deg,rgba(255,129,0,0)33.3%,rgba(255,129,0,1)66.7%)]"
+          className="bg-[linear-gradient(-60deg,rgba(255,129,0,0)33.3%,rgba(255,129,0,1)66.7%)] bg-[length:500%_100%] bg-clip-text pb-32 text-center text-3xl font-semibold [-webkit-text-fill-color:transparent] md:text-5xl"
           style={{
             backgroundPositionX: useMotionTemplate`calc(100% - ${percentage}%)`,
           }}

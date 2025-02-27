@@ -1,14 +1,14 @@
 @import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 
-:root {
+/* :root {
   --fill: oklch(98.52% 0.0192 90.54);
   --default: oklch(13.79% 0.025 71.38);
   --muted: oklch(20.25% 0.025 71.38);
   --accent: oklch(60.78% 0.1616 49.32);
-}
+} */
 
-.dark {
+:root {
   --fill: oklch(13.79% 0.025 71.38);
   --default: var(--color-neutral-50);
   --muted: var(--color-neutral-400);
@@ -26,9 +26,9 @@
   --color-accent: var(--accent);
 }
 
-html,
+/* html,
 body {
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
-}
+} */
