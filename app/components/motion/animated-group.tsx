@@ -122,7 +122,7 @@ function AnimatedGroup({
     <MotionComponent
       initial="hidden"
       whileInView="visible"
-      viewport={{ amount: 0.5 }}
+      viewport={{ once: true, amount: 0.65 }}
       variants={containerVariants}
       className={className}
     >
