@@ -23,7 +23,7 @@ export default function Work({ loaderData }: Route.ComponentProps) {
         {projects.map((project) => (
           <article
             key={project.slug}
-            className="bg-fill hover:border-accent/50 relative flex flex-col space-y-2 rounded-md border border-neutral-800 to-80% p-5 transition-colors hover:bg-gradient-to-r hover:from-white/5"
+            className="bg-fill hover:border-accent/50 hover:shadow-accent/20 relative flex flex-col space-y-2 rounded-md border border-neutral-800 to-80% p-5 shadow-md shadow-transparent transition-colors hover:bg-gradient-to-r hover:from-white/5"
           >
             <Link to={`/work/${project.slug}`} className="text-xl">
               {project.title}

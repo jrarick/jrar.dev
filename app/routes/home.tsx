@@ -22,6 +22,7 @@ import nodejsIcon from '~/assets/nodejs-icon.svg?url'
 import tanstackIcon from '~/assets/tanstack-icon.svg?url'
 import prismaIcon from '~/assets/prisma-icon.svg?url'
 import typescriptIcon from '~/assets/typescript-icon.svg?url'
+import robotOnComputer from '~/assets/robot-on-computer.jpeg?url'
 import {
   motion,
   useMotionTemplate,
@@ -30,6 +31,10 @@ import {
 } from 'motion/react'
 import { useRef } from 'react'
 import PixelTrail from '~/components/motion/pixel-trail'
+import { listAllProjects } from '~/lib/project.server'
+import type { Project } from '~/types/project'
+import { Link } from 'react-router'
+import { AnimatedGroup } from '~/components/motion/animated-group'
 
 const icons = [
   { url: d3Icon, alt: 'D3.js' },
@@ -53,6 +58,14 @@ const icons = [
   { url: typescriptIcon, alt: 'TypeScript' },
 ]
 
+export async function loader({}: Route.LoaderArgs) {
+  const projects = await listAllProjects()
+
+  const firstThreeProjects = projects.slice(0, 3)
+
+  return { projects: firstThreeProjects }
+}
+
 export function meta({}: Route.MetaArgs) {
   return [
     { title: 'Home' },
@@ -60,12 +73,14 @@ export function meta({}: Route.MetaArgs) {
   ]
 }
 
-export default function Home() {
+export default function Home({ loaderData }: Route.ComponentProps) {
+  const { projects } = loaderData
+
   return (
     <>
       <Hero />
       <TechnologiesSlider />
-      <Projects />
+      <Projects projects={projects} />
     </>
   )
 }
@@ -206,12 +221,83 @@ function TechnologiesSlider() {
             />
           ))}
         </InfiniteSlider>
-        <div className="to-fill from-fill absolute inset-0 z-10 hidden bg-gradient-to-r from-10% via-transparent via-50% to-90% sm:block" />
+        <div className="from-fill absolute inset-y-0 left-0 z-10 w-40 bg-gradient-to-r" />
+        <div className="from-fill absolute inset-y-0 right-0 z-10 w-40 bg-gradient-to-l" />
       </div>
     </div>
   )
 }
 
-function Projects() {
-  return null
+function Projects({ projects }: { projects: Project[] }) {
+  return (
+    <div className="py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto flex max-w-2xl flex-col items-center justify-between gap-16 lg:mx-0 lg:max-w-none lg:flex-row">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ amount: 0.5 }}
+            variants={{
+              hidden: { opacity: 0, scale: 0.95, filter: 'blur(4px)' },
+              visible: { opacity: 1, scale: 1, filter: 'blur(0px)' },
+            }}
+            className="w-full lg:max-w-lg lg:flex-auto"
+          >
+            <h2 className="mt-6 text-2xl/9 font-semibold">
+              The type of stuff I've been working on lately
+            </h2>
+            <figure>
+              <img
+                alt="Robot on typing on a computer in a candle lit room"
+                src={robotOnComputer}
+                className="bg-fill mt-16 aspect-6/5 w-full rounded-2xl object-cover lg:aspect-auto lg:h-[34.5rem]"
+              />
+              <figcaption className="text-muted mt-3 w-full text-center text-sm">
+                me when i go on computer
+              </figcaption>
+            </figure>
+          </motion.div>
+          <div className="w-full lg:max-w-xl lg:flex-auto">
+            <h3 className="sr-only">Job openings</h3>
+            <AnimatedGroup className="space-y-4" preset="flip">
+              {projects.map((project) => (
+                <article
+                  key={project.slug}
+                  className="bg-fill hover:border-accent/50 hover:shadow-accent/20 relative flex flex-col space-y-2 rounded-md border border-neutral-800 to-80% p-5 shadow-md shadow-transparent transition-colors hover:bg-gradient-to-r hover:from-white/5"
+                >
+                  <Link to={`/work/${project.slug}`} className="text-xl">
+                    {project.title}
+                    <span className="absolute inset-0" />
+                  </Link>
+                  <p className="text-muted text-sm">{project.description}</p>
+                </article>
+              ))}
+            </AnimatedGroup>
+            <div className="border-accent/50 mt-8 flex border-t pt-8">
+              <Link
+                to="/work"
+                className="text-accent flex items-center space-x-2 text-sm/6 font-semibold"
+              >
+                <span>See all work</span>
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 15 15"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z"
+                    fill="currentColor"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
