@@ -25,7 +25,7 @@ export async function bundlePost(slug: string) {
       options.rehypePlugins = [
         ...(options.rehypePlugins ?? []),
         // 👇 you can set your own theme from vscode themes
-        [rehypePrettyCode, { theme: 'nord' }],
+        [rehypePrettyCode, { theme: 'vesper' }],
       ]
       options.remarkPlugins = [...(options.remarkPlugins ?? [])]
       return options

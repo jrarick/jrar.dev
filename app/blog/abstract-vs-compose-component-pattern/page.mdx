@@ -1,0 +1,236 @@
+---
+title: "Abstract vs Compose Component Pattern"
+subtitle: "building React components in a maintainable way"
+datePublished: "2025-03-01"
+category: "react"
+---
+
+There's a programming principle called DRY that's long informed the way developers write software. Short for "Don't Repeat Yourself", DRY favors using abstractions instead of duplicating code. Not everyone agrees entirely with this idea as [Kent C. Dodds has coined AHA](https://kentcdodds.com/blog/aha-programming#aha-), short for "Avoid Hasty Abstractions". This principle prefers duplication over the wrong abstraction. So which way is better?
+
+## The abstract pattern
+
+Let's author a form field as an example. A simple React component containing a label, input field, and some error handling might look something like this:
+
+```tsx
+type InputFieldProps = {
+  name: string
+  label: string
+  required?: boolean
+  type?: string
+  placeholder?: string
+  error?: {
+    id: string
+    message: string
+  }
+}
+
+export const InputField({
+  name,
+  label,
+  required = false,
+  type = 'text',
+  placeholder,
+  error,
+}: InputFieldProps) => {
+  return (
+    <div>
+      <label htmlFor={label}>{label}</label>
+      <input
+        name={name}
+        id={name}
+        type={type}
+        required={required}
+        placeholder={placeholder}
+        aria-invalid={error && "true"}
+        aria-describedby={error?.id}
+      />
+      {error && <p id={error.id}>{error.message}</p>}
+    </div>
+  )
+}
+```
+
+So when you call that component it looks like this:
+
+```tsx
+// Your error handling/validation logic here
+
+<InputField
+  name="firstName"
+  label="First Name"
+  error={error}
+/>
+```
+
+Now we have this nice, clean, singular component that we can drop anywhere and it gives us everything we need for a simple input field. But what if we need some more granular control over the individual elements inside the component? Say we need to control whether the label is shown on the top or to the left of the field. Or maybe we don't want to show the label at all and use an aria attribute on the input element for screen readers. We can update the primitive again to give it a new prop defaulting to 'top' to handle that.
+
+```tsx
+type InputFieldProps = {
+  name: string
+  label: string
+  labelPlacement?: 'top' | 'left' | 'hidden'
+  required?: boolean
+  type?: string
+  placeholder?: string
+  error?: {
+    id: string
+    message: string
+  }
+}
+
+export const InputField({
+  name,
+  label,
+  labelPlacement = 'top',
+  required = false,
+  type = 'text',
+  placeholder,
+  error,
+}: InputFieldProps) => {
+  // updated component
+}
+```
+
+### Things start to get messy quickly
+
+Great, but actually our requirements have changed and now we need to be able to support multiple validation errors for the same field. I guess we can just make the `error` prop an array of `error` objects but actually what if we want some of those to just be warnings instead of errors? And what if we want add an option to make the input element a controlled component with React state? Also, we forgot to make a disabled state for the component earlier. And while we're at it maybe we should add an option to add a description field to give context to input fields where it's unclear to the user what the desired input is.
+
+Wow, this is spiraling out of control now. Our original intention was to have a nicely packaged reusable component we could drop anywhere but by the time we finish we're going to have one hundred different props on this component. Worse yet, every time our requirements change we'll have to monkey around with the primitive in order to accommodate the new behavior. Could it be that we... abstracted prematurely?
+
+### We've lost some typesafety and autocomplete goodies
+
+If we just use a plain `<input />` element in React, the built in `type` prop will provide us with autocomplete for all the different values of `type` that the input element accepts. Since we've just used a string type for our component we've lost that benefit. Of course we could type our `type` prop with the `React.HTMLInputTypeAttribute` type to reclaim our typesafety but if we need to do that for every narrowed type in our component that'll get tedious very quickly.
+
+### You can't predict the future (and neither can your components)
+
+This early abstraction model assumes that you know definitively what your future code will look like. That's a pretty unsound assumption. It's impossible to predict every changing requirement, every edge case, or every potential repetition. Inevitably, changes (some of them major) will need to be made to this component, and likely quite frequently.
+
+## The compose pattern
+
+Let's author this component again, but instead of trying to make one, large, all-encompassing component, we'll try to use the smallest primitive possible. If you've used [shadcn/ui](https://ui.shadcn.com/) before you might be familiar with this model; simple primitives with sensible defaults that are easy to extend. Basically our components will act as a thin wrapper around core elements. 
+
+```tsx
+import clsx from 'clsx'
+
+export const Input: React.FC<
+  React.ComponentProps<"input">
+> = ({ className, ...props }) = {
+  return (
+    <input
+      className={clsx("w-full border border-gray-500 p-2")}
+      {...props}
+    />
+  )
+}
+```
+
+Now any props we would pass to a native JSX `input` component we can pass to our new `Input` component. Using the `clsx` libary we can easily replace any of our default styles from above when we call this component:
+
+```tsx
+<Input className="border-blue-500" />
+```
+
+Now imagine we do the same with the other parts of our original component and extract them into their own simple primitives. We could even do the same with the wrapper div and create a `Field` component that houses all the parts of our original component. When we put it all together we can compose something like this:
+
+```tsx
+// do your error handling/validation
+
+<Field>
+  <Label htmlFor="firstName">First Name</Label>
+  <Input
+    id="firstName"
+    name="firstName"
+    aria-invalid={error && "true"}
+    aria-describedby={error?.id}
+  />
+  {error && <ErrorMessage id={error.id}>{error.message}<ErrorMessage>}
+</Field>
+```
+
+We've made it more verbose to use this component but the changes we've made are a huge win for maintainability and usability. For starters, our abstract component was a bit of a black box. If we hadn't used the component in a while it might be hard to remember what's going on inside of it unless we check its definition. Now, it's pretty clear exactly what going on.
+
+### A much more extensible pattern
+
+The great part of using small primitives like this is that we can switch components in and out easily. If we need a textarea instead we can create a new `Textarea` primitive and slide it into our existing components.
+
+```tsx
+// do your error handling/validation
+
+<Field>
+  <Label htmlFor="message">Message</Label>
+  <Textarea
+    id="message"
+    name="message"
+    aria-invalid={error && "true"}
+    aria-describedby={error?.id}
+  />
+  {error && <ErrorMessage id={error.id}>{error.message}<ErrorMessage>}
+</Field>
+```
+
+### Less fiddling with primitives
+
+Since we aim to only have a small wrapper around core JSX components, this means it's less likely we'll need to alter our core abstraction. Changes we need to make can be passed in as props as we compose an individual input field. That doesn't mean there will never be a case where we need to update a primitive component, but it was be far, far less frequent that with the abstract pattern.
+
+## A sensible middle ground
+
+Let's imagine a unique scenario where we have 50 differnt input fields with identical styles in a form. This might seem like a contrived example but perhaps for something like a digital patient intake form at a doctors office, this could be a realistic scenario. It would be very sensible to use an abstraction to avoid having to compose 50 different fields. But how can we avoid some of the pitfalls from our previous abstraction?
+
+### Use a localized abstraction instead of a global abstraction
+
+Instead of creating a `InputField` component that might get re-used carelessly all over the place, we can create a `PatientIntakeInputField` that is uniquely named to address this specific problem. The inside of the component can remain the same but the name discourages misuse.
+
+### Stay close to core primitives even when using abstractions
+
+With our previous abstraction, we had nightmares about 100 props on the component but what if we made our props modular? There's a very clear separation of concerns despite us abstracting our component:
+
+```tsx
+import Field from 'wherever'
+import Label from 'wherever'
+import Input from 'wherever'
+import ErrorMessage from 'wherever'
+
+type PatientIntakeInputFieldProps = {
+  fieldProps: React.ComponentProps<typeof Field>
+  labelProps: React.ComponentProps<typeof Label>
+  inputProps: React.ComponentProps<typeof Input>
+  errorProps: React.ComponentProps<typeof ErrorMessage>
+  error?: {
+    id: string
+    message: string
+  }
+}
+
+export const PatientIntakeInputField = ({
+  fieldProps,
+  labelProps,
+  inputProps,
+  errorProps,
+  error
+}: PatientIntakeInputFieldProps) => {
+  return (
+    <Field {...fieldProps}>
+      <Label {...labelProps}>Message</Label>
+      <Input
+        aria-invalid={error && "true"}
+        aria-describedby={error?.id}
+        {...inputProps}
+      />
+      {error && (
+        <ErrorMessage
+          id={error?.id}
+          {...errorProps}
+        >
+          {error.message}
+        <ErrorMessage>
+      )}
+    </Field>
+  )
+}
+```
+
+Yay, we still have the benfits of an abstract pattern but with now with with the control and maintainability of a compose pattern.
+
+## To sum it up
+
+As the size of your codebase grows, the more important your method of component authorship becomes. A premature and thoughtless abstraction can have compounding negative effects on your workflow. Thoughtful, well-engineered primitives that you can easily extend will have almost endless value.

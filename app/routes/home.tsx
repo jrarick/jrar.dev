@@ -34,7 +34,6 @@ import PixelTrail from '~/components/motion/pixel-trail'
 import { listAllProjects } from '~/lib/project.server'
 import type { Project } from '~/types/project'
 import { Link } from 'react-router'
-import { AnimatedGroup } from '~/components/motion/animated-group'
 
 const icons = [
   { url: d3Icon, alt: 'D3.js' },
@@ -259,7 +258,7 @@ function Projects({ projects }: { projects: Project[] }) {
           </motion.div>
           <div className="w-full lg:max-w-xl lg:flex-auto">
             <h3 className="sr-only">Job openings</h3>
-            <AnimatedGroup className="space-y-4" preset="flip">
+            <div className="space-y-4">
               {projects.map((project) => (
                 <article
                   key={project.slug}
@@ -276,7 +275,7 @@ function Projects({ projects }: { projects: Project[] }) {
                   <p className="text-muted text-sm">{project.description}</p>
                 </article>
               ))}
-            </AnimatedGroup>
+            </div>
             <div className="border-accent/50 mt-8 flex border-t pt-8">
               <Link
                 to="/work"

@@ -1,4 +1,3 @@
-'use client'
 import { type ReactNode, useRef } from 'react'
 import {
   motion,
