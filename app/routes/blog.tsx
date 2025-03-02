@@ -25,7 +25,7 @@ export default function Blog({ loaderData }: Route.ComponentProps) {
             key={article.slug}
             className="bg-fill hover:border-accent/50 relative flex flex-col space-y-2 rounded-md border border-neutral-800 to-80% p-5 transition-colors hover:bg-gradient-to-r hover:from-white/5"
           >
-            <div className="bg-accent text-fill w-min rounded-md px-2.5 py-1 text-xs">
+            <div className="bg-accent text-fill w-min rounded-md px-2.5 py-1 text-xs font-bold">
               {article.category}
             </div>
             <Link

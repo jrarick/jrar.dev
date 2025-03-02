@@ -170,7 +170,7 @@ The great part of using small primitives like this is that we can switch compone
 
 ### Less fiddling with primitives
 
-Since we aim to only have a small wrapper around core JSX components, this means it's less likely we'll need to alter our core abstraction. Changes we need to make can be passed in as props as we compose an individual input field. That doesn't mean there will never be a case where we need to update a primitive component, but it was be far, far less frequent that with the abstract pattern.
+Since we aim to only have a small wrapper around core JSX components, this means it's less likely we'll need to alter our core abstraction. Changes we need to make can be passed in as props as we compose an individual input field. That doesn't mean there will never be a case where we need to update a primitive component, but it will be far, far less frequent than with the abstract pattern.
 
 ## A sensible middle ground
 
@@ -182,7 +182,7 @@ Instead of creating a `InputField` component that might get re-used carelessly a
 
 ### Stay close to core primitives even when using abstractions
 
-With our previous abstraction, we had nightmares about 100 props on the component but what if we made our props modular? There's a very clear separation of concerns despite us abstracting our component:
+With our previous abstraction, we had nightmares about the component having 100 props but what if we made our props modular? There's a very clear separation of concerns here despite us abstracting our component:
 
 ```tsx
 import Field from 'wherever'
