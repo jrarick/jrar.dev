@@ -96,7 +96,7 @@ function Header() {
           <Link to="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
             <span className="text-accent text-xl font-semibold sm:text-2xl">
-              JRAR.DEV
+              JRAR.dev
             </span>
           </Link>
         </div>
