@@ -5,7 +5,7 @@ datePublished: "2025-02-23"
 category: "react"
 ---
 
-React Server Components, or RSCs for short, were introduced into the world in React 18 as a canary release and then in a stable release in React 19. They were highly anticipated for years and for good reason. Finally you could unshackle yourself from those awful `useEffects` you were using for data fetching and get rid of that unnecessary API endpoint acting as a middleman. Just fetch your data directly in your component on the server and you're done. Need to post a form submission to the server? Just slap a server action directly in your form component; it's that easy. Huge win honestly.
+React Server Components, or RSCs for short, were introduced into the world in React 18 as a canary release and then in a stable release in React 19. They were highly anticipated for years and for good reason. Finally you could unshackle yourself from all those `useEffects` you were using for data fetching and get rid of your API enpoints. Just fetch your data directly in your component on the server and you're done. Need to post a form submission to the server? Just slap a server action directly in your form component; it's that easy. Huge win honestly.
 
 Not only that but RSCs are really the perfect "portable" paradigm for modern React. Thanks to JSX, RSCs, and the ubiquity of Tailwind you can have your RSC tell the entire story of your UI. Now your markup, styles, interactivity (sort of, we'll get to that later), and data fetching are all colocated one place. You can share these full-stack RSCs between projects and they just work. This helps LLMs too because they're really good at generating boilerplate slop and RSCs are, in a way, the ultimate UI biolerplate.
 
@@ -31,10 +31,14 @@ So RSCs will help significantly reduce the initial amount of data being sent to 
 
 ## Styling is too opinionated
 
-"Just use Tailwind". I mean yeah, I probably will honestly but it seems like a JavaScript view library shouldn't really be forcing your hand in terms of styling solutions. CSS-in-JS solutions like [styled-components just straight up won't work with RSCs](https://github.com/styled-components/styled-components/issues/4025) since they use React hooks under the hood. So it's either convert everything to a client component or find a different styling solution. Not great.
+"Just use Tailwind". It's likely that I will but still it seems like a JavaScript view library shouldn't really be forcing my hand in terms of styling solutions. CSS-in-JS solutions like styled-components just [straight up won't work with RSCs](https://github.com/styled-components/styled-components/issues/4025) since they use React hooks under the hood. So the two options for now are either convert everything to a client component or find a different styling solution.
 
-## RSCs aren't really React and they're not really HTML
+## RSCs aren't really React or HTML
 
-Like mentioned earlier, RSCs don't operate the way we've become familiar with pre React 18. Sure they have props that can be passed in but they don't have a render lifecycle and they don't have hooks. And since they don't operate in a browser environment, you can't make use of browser APIs like you would with plain HTML. So they operate in a strange place where you can fetch and send data and create static UIs but not much else. I don't know about you guys but generally I do more than that in my web apps so that makes their utility pretty limited.
+Like mentioned earlier, RSCs don't operate the way we've become familiar with pre React 18. Sure they have props that can be passed in but they don't have a render lifecycle and they don't have hooks. And since they don't operate in a browser environment, you can't make use of browser APIs like you would with plain HTML. So they operate in a strange place where you can fetch and send data and create static UIs but not much else. Generally, most people do more than that in web apps so that makes their utility limited.
 
-Debugging RSCs can be a pain too. This could improve over time as the ecosystem matures but often you'll get cryptic errors about with no hint about where the error is stemming from. Where did you accidently import a hook into a server component? Figure it out yourself.
+Debugging RSCs can be a pain too. This could improve over time as the ecosystem matures but often you'll get cryptic errors about with no hint about where the error is stemming from. Where did you accidently import a hook into a server component? Unfortunately you'll have to figure that out yourself until we get some more helpful error messages.
+
+## Could RSCs be a great way to build in the future?
+
+As time passes, some of these painful parts of RSCs may be reduced or eliminated. New abstractions may be created that reduces the friction from weaving client and server components together. Libraries will adapt and those weird and cryptic errors will appear less frequently. Documentation will likely improve and developer education will be more accessible. Hopefully, I can look back on this post in a few years and see how far RSCs have come.
