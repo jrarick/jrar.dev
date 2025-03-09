@@ -1,0 +1,150 @@
+{
+  "buildManifest": {
+    "serverBundles": {
+      "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0": {
+        "id": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+        "file": "build/server/nodejs_eyJydW50aW1lIjoibm9kZWpzIn0/index.js",
+        "config": {
+          "runtime": "nodejs"
+        }
+      }
+    },
+    "routeIdToServerBundleId": {
+      "routes/home": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/blog": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/blog-post": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/work": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/project": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/about": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0"
+    },
+    "routes": {
+      "root": {
+        "path": "",
+        "id": "root",
+        "file": "app/root.tsx",
+        "config": {}
+      },
+      "routes/home": {
+        "id": "routes/home",
+        "parentId": "root",
+        "file": "app/routes/home.tsx",
+        "index": true,
+        "config": {
+          "runtime": "nodejs"
+        }
+      },
+      "routes/blog": {
+        "id": "routes/blog",
+        "parentId": "root",
+        "file": "app/routes/blog.tsx",
+        "path": "blog",
+        "index": true,
+        "config": {
+          "runtime": "nodejs"
+        }
+      },
+      "routes/blog-post": {
+        "id": "routes/blog-post",
+        "parentId": "root",
+        "file": "app/routes/blog-post.tsx",
+        "path": "blog/:slug",
+        "config": {
+          "runtime": "nodejs"
+        }
+      },
+      "routes/work": {
+        "id": "routes/work",
+        "parentId": "root",
+        "file": "app/routes/work.tsx",
+        "path": "work",
+        "index": true,
+        "config": {
+          "runtime": "nodejs"
+        }
+      },
+      "routes/project": {
+        "id": "routes/project",
+        "parentId": "root",
+        "file": "app/routes/project.tsx",
+        "path": "work/:slug",
+        "config": {
+          "runtime": "nodejs"
+        }
+      },
+      "routes/about": {
+        "id": "routes/about",
+        "parentId": "root",
+        "file": "app/routes/about.tsx",
+        "path": "about",
+        "config": {
+          "runtime": "nodejs"
+        }
+      }
+    }
+  },
+  "reactRouterConfig": {
+    "appDirectory": "/Users/joshuararick/Documents/jrar.dev/app",
+    "basename": "/",
+    "buildDirectory": "/Users/joshuararick/Documents/jrar.dev/build",
+    "future": {
+      "unstable_middleware": false,
+      "unstable_optimizeDeps": false,
+      "unstable_splitRouteModules": false,
+      "unstable_viteEnvironmentApi": false
+    },
+    "prerender": true,
+    "routes": {
+      "root": {
+        "path": "",
+        "id": "root",
+        "file": "root.tsx"
+      },
+      "routes/home": {
+        "id": "routes/home",
+        "parentId": "root",
+        "file": "routes/home.tsx",
+        "index": true
+      },
+      "routes/blog": {
+        "id": "routes/blog",
+        "parentId": "root",
+        "file": "routes/blog.tsx",
+        "path": "blog",
+        "index": true
+      },
+      "routes/blog-post": {
+        "id": "routes/blog-post",
+        "parentId": "root",
+        "file": "routes/blog-post.tsx",
+        "path": "blog/:slug"
+      },
+      "routes/work": {
+        "id": "routes/work",
+        "parentId": "root",
+        "file": "routes/work.tsx",
+        "path": "work",
+        "index": true
+      },
+      "routes/project": {
+        "id": "routes/project",
+        "parentId": "root",
+        "file": "routes/project.tsx",
+        "path": "work/:slug"
+      },
+      "routes/about": {
+        "id": "routes/about",
+        "parentId": "root",
+        "file": "routes/about.tsx",
+        "path": "about"
+      }
+    },
+    "serverBuildFile": "index.js",
+    "serverModuleFormat": "esm",
+    "ssr": true
+  },
+  "viteConfig": {
+    "build": {
+      "assetsDir": "assets"
+    }
+  }
+}
