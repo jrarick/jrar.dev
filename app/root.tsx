@@ -12,6 +12,7 @@ import type { Route } from './+types/root'
 import './styles/app.css'
 import { TextScramble } from './components/motion/text-scramble'
 import { useState } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -41,6 +42,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Footer />
         <ScrollRestoration />
         <Scripts />
+        <Analytics />
       </body>
     </html>
   )
