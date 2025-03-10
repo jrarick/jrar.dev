@@ -16,4 +16,5 @@ export default [
     route(':slug', 'routes/project.tsx'),
   ]),
   route('about', 'routes/about.tsx'),
+  route('sitemap.xml', 'sitemap.ts')
 ] satisfies RouteConfig
