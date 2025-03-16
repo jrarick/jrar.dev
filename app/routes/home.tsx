@@ -99,6 +99,7 @@ function Hero() {
       filter: 'blur(0px)',
       rotateX: 0,
       scale: 1,
+      once: true,
     },
   }
 
@@ -135,7 +136,7 @@ function Hero() {
       <div className="overflow-hidden">
         <InView
           variants={titleVaraints}
-          viewOptions={{ margin: '0px 0px -200px 0px' }}
+          viewOptions={{ margin: '0px 0px -200px 0px', once: true }}
           transition={{
             duration: 0.2,
             delay: 0.2,
@@ -191,25 +192,12 @@ function Hero() {
 }
 
 function TechnologiesSlider() {
-  const ref = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start'],
-  })
-
-  const percentage = useTransform(scrollYProgress, [0, 1], [0, 100])
-
   return (
     <div className="py-36">
-      <div className="relative mx-auto max-w-7xl py-24" ref={ref}>
-        <motion.h2
-          className="bg-[linear-gradient(-60deg,rgba(255,129,0,0)33.3%,rgba(255,129,0,1)66.7%)] bg-[length:500%_100%] bg-clip-text pb-32 text-center text-3xl font-semibold [-webkit-text-fill-color:transparent] md:text-5xl"
-          style={{
-            backgroundPositionX: useMotionTemplate`calc(100% - ${percentage}%)`,
-          }}
-        >
+      <div className="relative mx-auto max-w-7xl py-24">
+        <h2 className="text-accent pb-32 text-center text-3xl font-semibold md:text-5xl">
           The Tools I Use
-        </motion.h2>
+        </h2>
         <InfiniteSlider duration={15} gap={200}>
           {icons.map((icon) => (
             <img
@@ -232,16 +220,7 @@ function Projects({ projects }: { projects: Project[] }) {
     <div className="py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto flex max-w-2xl flex-col items-center justify-between gap-16 lg:mx-0 lg:max-w-none lg:flex-row">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ amount: 0.5 }}
-            variants={{
-              hidden: { opacity: 0, scale: 0.95, filter: 'blur(4px)' },
-              visible: { opacity: 1, scale: 1, filter: 'blur(0px)' },
-            }}
-            className="w-full lg:max-w-lg lg:flex-auto"
-          >
+          <div className="w-full lg:max-w-lg lg:flex-auto">
             <h2 className="mt-6 text-2xl/9 font-semibold">
               The type of stuff I've been working on lately
             </h2>
@@ -255,7 +234,7 @@ function Projects({ projects }: { projects: Project[] }) {
                 me when i go on computer
               </figcaption>
             </figure>
-          </motion.div>
+          </div>
           <div className="w-full lg:max-w-xl lg:flex-auto">
             <h3 className="sr-only">Job openings</h3>
             <div className="space-y-4">
