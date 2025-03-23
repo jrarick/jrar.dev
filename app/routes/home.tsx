@@ -2,7 +2,6 @@ import type { Route } from './+types/home'
 import '../styles/hero.css'
 import { InView } from '~/components/motion/in-view'
 import { TextEffect } from '~/components/motion/text-effect'
-import { InfiniteSlider } from '~/components/motion/infinite-slider'
 import d3Icon from '~/assets/d3-icon.svg?url'
 import figmaIcon from '~/assets/figma-icon.svg?url'
 import gsapIcon from '~/assets/gsap-icon.svg?url'
@@ -23,17 +22,14 @@ import tanstackIcon from '~/assets/tanstack-icon.svg?url'
 import prismaIcon from '~/assets/prisma-icon.svg?url'
 import typescriptIcon from '~/assets/typescript-icon.svg?url'
 import robotOnComputer from '~/assets/robot-on-computer.jpeg?url'
-import {
-  motion,
-  useMotionTemplate,
-  useScroll,
-  useTransform,
-} from 'motion/react'
-import { useRef } from 'react'
 import PixelTrail from '~/components/motion/pixel-trail'
 import { listAllProjects } from '~/lib/project.server'
 import type { Project } from '~/types/project'
 import { Link } from 'react-router'
+import { useState } from 'react'
+import VerticalCutReveal from '~/components/motion/vertical-cut-reveal'
+import SimpleMarquee from '~/components/motion/simple-marquee'
+import { motion } from 'motion/react'
 
 const icons = [
   { url: d3Icon, alt: 'D3.js' },
@@ -56,6 +52,9 @@ const icons = [
   { url: prismaIcon, alt: 'Prisma' },
   { url: typescriptIcon, alt: 'TypeScript' },
 ]
+
+const firstHalfIcons = icons.slice(0, Math.ceil(icons.length / 2))
+const secondHalfIcons = icons.slice(Math.ceil(icons.length / 2), icons.length)
 
 export async function loader({}: Route.LoaderArgs) {
   const projects = await listAllProjects()
@@ -192,24 +191,72 @@ function Hero() {
 }
 
 function TechnologiesSlider() {
+  const [container, setContainer] = useState<HTMLElement | null>(null)
+
   return (
-    <div className="py-36">
-      <div className="relative mx-auto max-w-7xl py-24">
-        <h2 className="text-accent pb-32 text-center text-3xl font-semibold md:text-5xl">
+    <div
+      className="relative mx-auto flex h-dvh max-w-7xl flex-col items-center justify-center overflow-x-hidden overflow-y-auto"
+      ref={(node) => setContainer(node)}
+    >
+      <h1 className="text-accent pb-32 text-center text-3xl font-semibold md:text-5xl">
+        <VerticalCutReveal splitBy="characters" staggerDuration={0.04}>
           The Tools I Use
-        </h2>
-        <InfiniteSlider duration={15} gap={200}>
-          {icons.map((icon) => (
-            <img
-              key={icon.alt}
-              className="h-16"
-              src={icon.url}
-              alt={icon.alt}
-            />
+        </VerticalCutReveal>
+      </h1>
+      <div className="absolute top-1/5 z-0 flex h-full w-full flex-col items-center justify-center space-y-32 sm:top-2/4">
+        <SimpleMarquee
+          className="relative z-10 w-full"
+          baseVelocity={8}
+          repeat={2}
+          draggable={true}
+          dragSensitivity={0.08}
+          useScrollVelocity={true}
+          scrollAwareDirection={true}
+          scrollSpringConfig={{ damping: 50, stiffness: 400 }}
+          scrollContainer={{ current: container! }}
+          dragAwareDirection={true}
+          grabCursor
+          direction="left"
+        >
+          {firstHalfIcons.map((icon, i) => (
+            <MarqueeItem key={icon.alt} index={i}>
+              <motion.img
+                src={icon.url}
+                alt={icon.alt}
+                draggable={false}
+                className="h-20 select-none"
+              />
+            </MarqueeItem>
           ))}
-        </InfiniteSlider>
-        <div className="from-fill absolute inset-y-0 left-0 z-10 w-40 bg-gradient-to-r" />
-        <div className="from-fill absolute inset-y-0 right-0 z-10 w-40 bg-gradient-to-l" />
+        </SimpleMarquee>
+
+        <SimpleMarquee
+          className="relative z-20 w-full"
+          baseVelocity={8}
+          repeat={2}
+          draggable={true}
+          dragSensitivity={0.08}
+          useScrollVelocity={true}
+          scrollAwareDirection={true}
+          scrollSpringConfig={{ damping: 50, stiffness: 400 }}
+          scrollContainer={{ current: container! }}
+          dragAwareDirection={true}
+          grabCursor
+          direction="right"
+        >
+          {secondHalfIcons.map((icon, i) => (
+            <MarqueeItem key={icon.alt} index={i}>
+              <motion.img
+                src={icon.url}
+                alt={icon.alt}
+                draggable={false}
+                className="h-20 select-none"
+              />
+            </MarqueeItem>
+          ))}
+        </SimpleMarquee>
+        <div className="from-fill absolute bottom-0 left-0 z-30 h-full w-56 bg-gradient-to-r" />
+        <div className="from-fill absolute right-0 bottom-0 z-30 h-full w-56 bg-gradient-to-l" />
       </div>
     </div>
   )
@@ -284,3 +331,24 @@ function Projects({ projects }: { projects: Project[] }) {
     </div>
   )
 }
+
+const MarqueeItem = ({
+  children,
+  index,
+}: {
+  children: React.ReactNode
+  index: number
+}) => (
+  <motion.div
+    className="mx-2 flex rotate-y-45 rotate-z-12 flex-col items-center justify-center p-2 perspective-near transform-3d sm:mx-3 sm:p-3 md:mx-16 md:p-4"
+    initial={{ opacity: 0, y: 0, filter: 'blur(10px)' }}
+    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+    transition={{ duration: 0.5, ease: 'easeOut', delay: 0.3 + 0.1 * index }}
+    style={{
+      transform: `translateZ(-150px) rotate(${index * 15}deg)`,
+      transformStyle: 'preserve-3d',
+    }}
+  >
+    {children}
+  </motion.div>
+)
