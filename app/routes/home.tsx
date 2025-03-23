@@ -198,7 +198,7 @@ function TechnologiesSlider() {
       className="relative mx-auto flex h-dvh max-w-7xl flex-col items-center justify-center overflow-x-hidden overflow-y-auto"
       ref={(node) => setContainer(node)}
     >
-      <h1 className="text-accent pb-32 text-center text-3xl font-semibold md:text-5xl">
+      <h1 className="text-accent absolute top-64 max-w-3/4 text-center text-3xl font-semibold sm:text-4xl md:text-5xl">
         <VerticalCutReveal splitBy="characters" staggerDuration={0.04}>
           The Tools I Use
         </VerticalCutReveal>
@@ -224,7 +224,7 @@ function TechnologiesSlider() {
                 src={icon.url}
                 alt={icon.alt}
                 draggable={false}
-                className="h-20 select-none"
+                className="h-12 select-none md:h-20"
               />
             </MarqueeItem>
           ))}
@@ -250,13 +250,13 @@ function TechnologiesSlider() {
                 src={icon.url}
                 alt={icon.alt}
                 draggable={false}
-                className="h-20 select-none"
+                className="h-12 select-none md:h-20"
               />
             </MarqueeItem>
           ))}
         </SimpleMarquee>
-        <div className="from-fill absolute bottom-0 left-0 z-30 h-full w-56 bg-gradient-to-r" />
-        <div className="from-fill absolute right-0 bottom-0 z-30 h-full w-56 bg-gradient-to-l" />
+        <div className="from-fill absolute bottom-0 left-0 z-30 h-full w-36 bg-gradient-to-r sm:w-56" />
+        <div className="from-fill absolute right-0 bottom-0 z-30 h-full w-36 bg-gradient-to-l sm:w-56" />
       </div>
     </div>
   )
@@ -340,7 +340,7 @@ const MarqueeItem = ({
   index: number
 }) => (
   <motion.div
-    className="mx-2 flex rotate-y-45 rotate-z-12 flex-col items-center justify-center p-2 perspective-near transform-3d sm:mx-3 sm:p-3 md:mx-16 md:p-4"
+    className="mx-16 flex rotate-y-45 rotate-z-12 flex-col items-center justify-center p-2 perspective-near transform-3d sm:p-3 md:p-4"
     initial={{ opacity: 0, y: 0, filter: 'blur(10px)' }}
     animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
     transition={{ duration: 0.5, ease: 'easeOut', delay: 0.3 + 0.1 * index }}
