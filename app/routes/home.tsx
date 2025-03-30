@@ -2,7 +2,6 @@ import type { Route } from './+types/home'
 import '../styles/hero.css'
 import { InView } from '~/components/motion/in-view'
 import { TextEffect } from '~/components/motion/text-effect'
-import { InfiniteSlider } from '~/components/motion/infinite-slider'
 import d3Icon from '~/assets/d3-icon.svg?url'
 import figmaIcon from '~/assets/figma-icon.svg?url'
 import gsapIcon from '~/assets/gsap-icon.svg?url'
@@ -23,17 +22,19 @@ import tanstackIcon from '~/assets/tanstack-icon.svg?url'
 import prismaIcon from '~/assets/prisma-icon.svg?url'
 import typescriptIcon from '~/assets/typescript-icon.svg?url'
 import robotOnComputer from '~/assets/robot-on-computer.jpeg?url'
-import {
-  motion,
-  useMotionTemplate,
-  useScroll,
-  useTransform,
-} from 'motion/react'
-import { useRef } from 'react'
 import PixelTrail from '~/components/motion/pixel-trail'
 import { listAllProjects } from '~/lib/project.server'
 import type { Project } from '~/types/project'
 import { Link } from 'react-router'
+import { useEffect, useRef, useState } from 'react'
+import SimpleMarquee from '~/components/motion/simple-marquee'
+import { motion } from 'motion/react'
+import { cn } from '~/lib/utils'
+
+type Icon = {
+  url: string
+  alt: string
+}
 
 const icons = [
   { url: d3Icon, alt: 'D3.js' },
@@ -56,6 +57,9 @@ const icons = [
   { url: prismaIcon, alt: 'Prisma' },
   { url: typescriptIcon, alt: 'TypeScript' },
 ]
+
+const firstHalfIcons = icons.slice(0, Math.floor(icons.length / 2))
+const secondHalfIcons = icons.slice(Math.floor(icons.length / 2))
 
 export async function loader({}: Route.LoaderArgs) {
   const projects = await listAllProjects()
@@ -193,23 +197,49 @@ function Hero() {
 
 function TechnologiesSlider() {
   return (
-    <div className="py-36">
-      <div className="relative mx-auto max-w-7xl py-24">
-        <h2 className="text-accent pb-32 text-center text-3xl font-semibold md:text-5xl">
-          The Tools I Use
-        </h2>
-        <InfiniteSlider duration={15} gap={200}>
-          {icons.map((icon) => (
-            <img
-              key={icon.alt}
-              className="h-16"
-              src={icon.url}
-              alt={icon.alt}
-            />
+    <div className="relative flex h-[48rem] w-dvw flex-col items-center justify-center overflow-hidden sm:h-[56rem] md:h-[72rem]">
+      <h2 className="text-accent absolute top-1/4 text-center text-3xl font-semibold sm:text-5xl md:text-6xl">
+        The Tools I Use
+      </h2>
+
+      <div
+        className="absolute top-0 -left-3/4 flex h-full w-[200%] flex-col items-center justify-center gap-y-24 perspective-near"
+        style={{
+          transform:
+            'rotateX(45deg) rotateY(-15deg) rotateZ(35deg) translateZ(-200px)',
+        }}
+      >
+        <SimpleMarquee
+          className="w-full"
+          baseVelocity={10}
+          repeat={3}
+          draggable={false}
+          scrollSpringConfig={{ damping: 50, stiffness: 400 }}
+          slowDownFactor={0.2}
+          slowdownOnHover
+          slowDownSpringConfig={{ damping: 60, stiffness: 300 }}
+          direction="left"
+        >
+          {firstHalfIcons.map((icon, i) => (
+            <MarqueeItem key={icon.alt} index={i} icon={icon} />
           ))}
-        </InfiniteSlider>
-        <div className="from-fill absolute inset-y-0 left-0 z-10 w-40 bg-gradient-to-r" />
-        <div className="from-fill absolute inset-y-0 right-0 z-10 w-40 bg-gradient-to-l" />
+        </SimpleMarquee>
+
+        <SimpleMarquee
+          className="w-full"
+          baseVelocity={10}
+          repeat={3}
+          scrollSpringConfig={{ damping: 50, stiffness: 400 }}
+          slowdownOnHover
+          slowDownFactor={0.2}
+          slowDownSpringConfig={{ damping: 60, stiffness: 300 }}
+          draggable={false}
+          direction="right"
+        >
+          {secondHalfIcons.map((icon, i) => (
+            <MarqueeItem key={icon.alt} index={i} icon={icon} />
+          ))}
+        </SimpleMarquee>
       </div>
     </div>
   )
@@ -282,5 +312,87 @@ function Projects({ projects }: { projects: Project[] }) {
         </div>
       </div>
     </div>
+  )
+}
+
+const MarqueeItem = ({ icon, index }: { icon: Icon; index: number }) => {
+  const variants = {
+    initial: {
+      y: '0px',
+      x: '0px',
+      scale: 1,
+      opacity: 1,
+    },
+    hover: {
+      y: '-12px',
+      x: '-12px',
+      scale: 1.05,
+      transition: {
+        duration: 0.15,
+        ease: 'easeOut',
+      },
+    },
+  }
+
+  const textVariants = {
+    initial: {
+      opacity: 0,
+    },
+    hover: {
+      opacity: 1,
+      transition: {
+        duration: 0.15,
+        ease: 'easeOut',
+      },
+    },
+  }
+
+  const imageVariants = {
+    initial: {
+      opacity: 1,
+    },
+    hover: {
+      opacity: 0.45,
+      transition: {
+        duration: 0.15,
+        ease: 'easeOut',
+      },
+    },
+  }
+
+  const containerClasses = cn(
+    'mx-2 sm:mx-3 md:mx-4',
+    'h-16 w-32 sm:h-20 sm:w-40 md:h-24 md:w-48',
+    'relative flex',
+    'flex-col transform-gpu'
+  )
+
+  const textContainerClasses = cn(
+    'p-2 sm:p-2.5 md:p-3 h-full flex flex-col item-center justify-center',
+    'leading-tight'
+  )
+
+  const imageClasses = cn('object-contain w-full h-full absolute')
+
+  return (
+    <motion.div
+      className={containerClasses}
+      initial="initial"
+      whileHover="hover"
+      variants={variants}
+    >
+      <motion.div className={textContainerClasses} variants={textVariants}>
+        <h3 className="z-30 text-xl font-medium text-white md:text-3xl">
+          {icon.alt}
+        </h3>
+      </motion.div>
+      <motion.img
+        src={icon.url}
+        alt={icon.alt}
+        draggable={false}
+        className={imageClasses}
+        variants={imageVariants}
+      />
+    </motion.div>
   )
 }
