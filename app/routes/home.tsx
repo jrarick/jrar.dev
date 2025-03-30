@@ -26,10 +26,15 @@ import PixelTrail from '~/components/motion/pixel-trail'
 import { listAllProjects } from '~/lib/project.server'
 import type { Project } from '~/types/project'
 import { Link } from 'react-router'
-import { useState } from 'react'
-import VerticalCutReveal from '~/components/motion/vertical-cut-reveal'
+import { useEffect, useRef, useState } from 'react'
 import SimpleMarquee from '~/components/motion/simple-marquee'
 import { motion } from 'motion/react'
+import { cn } from '~/lib/utils'
+
+type Icon = {
+  url: string
+  alt: string
+}
 
 const icons = [
   { url: d3Icon, alt: 'D3.js' },
@@ -53,8 +58,8 @@ const icons = [
   { url: typescriptIcon, alt: 'TypeScript' },
 ]
 
-const firstHalfIcons = icons.slice(0, Math.ceil(icons.length / 2))
-const secondHalfIcons = icons.slice(Math.ceil(icons.length / 2), icons.length)
+const firstHalfIcons = icons.slice(0, Math.floor(icons.length / 2))
+const secondHalfIcons = icons.slice(Math.floor(icons.length / 2))
 
 export async function loader({}: Route.LoaderArgs) {
   const projects = await listAllProjects()
@@ -191,72 +196,50 @@ function Hero() {
 }
 
 function TechnologiesSlider() {
-  const [container, setContainer] = useState<HTMLElement | null>(null)
-
   return (
-    <div
-      className="relative mx-auto flex h-dvh max-w-7xl flex-col items-center justify-center overflow-x-hidden overflow-y-auto"
-      ref={(node) => setContainer(node)}
-    >
-      <h1 className="text-accent absolute top-64 max-w-3/4 text-center text-3xl font-semibold sm:text-4xl md:text-5xl">
-        <VerticalCutReveal splitBy="characters" staggerDuration={0.04}>
-          The Tools I Use
-        </VerticalCutReveal>
-      </h1>
-      <div className="absolute top-1/5 z-0 flex h-full w-full flex-col items-center justify-center space-y-32 sm:top-2/4">
+    <div className="relative flex h-[48rem] w-dvw flex-col items-center justify-center overflow-hidden sm:h-[56rem] md:h-[72rem]">
+      <h2 className="text-accent absolute top-1/4 text-center text-3xl font-semibold sm:text-5xl md:text-6xl">
+        The Tools I Use
+      </h2>
+
+      <div
+        className="absolute top-0 -left-3/4 flex h-full w-[200%] flex-col items-center justify-center gap-y-24 perspective-near"
+        style={{
+          transform:
+            'rotateX(45deg) rotateY(-15deg) rotateZ(35deg) translateZ(-200px)',
+        }}
+      >
         <SimpleMarquee
-          className="relative z-10 w-full"
-          baseVelocity={8}
-          repeat={2}
-          draggable={true}
-          dragSensitivity={0.08}
-          useScrollVelocity={true}
-          scrollAwareDirection={true}
+          className="w-full"
+          baseVelocity={10}
+          repeat={3}
+          draggable={false}
           scrollSpringConfig={{ damping: 50, stiffness: 400 }}
-          scrollContainer={{ current: container! }}
-          dragAwareDirection={true}
-          grabCursor
+          slowDownFactor={0.2}
+          slowdownOnHover
+          slowDownSpringConfig={{ damping: 60, stiffness: 300 }}
           direction="left"
         >
           {firstHalfIcons.map((icon, i) => (
-            <MarqueeItem key={icon.alt} index={i}>
-              <motion.img
-                src={icon.url}
-                alt={icon.alt}
-                draggable={false}
-                className="h-12 select-none md:h-20"
-              />
-            </MarqueeItem>
+            <MarqueeItem key={icon.alt} index={i} icon={icon} />
           ))}
         </SimpleMarquee>
 
         <SimpleMarquee
-          className="relative z-20 w-full"
-          baseVelocity={8}
-          repeat={2}
-          draggable={true}
-          dragSensitivity={0.08}
-          useScrollVelocity={true}
-          scrollAwareDirection={true}
+          className="w-full"
+          baseVelocity={10}
+          repeat={3}
           scrollSpringConfig={{ damping: 50, stiffness: 400 }}
-          scrollContainer={{ current: container! }}
-          dragAwareDirection={true}
-          grabCursor
+          slowdownOnHover
+          slowDownFactor={0.2}
+          slowDownSpringConfig={{ damping: 60, stiffness: 300 }}
+          draggable={false}
           direction="right"
         >
           {secondHalfIcons.map((icon, i) => (
-            <MarqueeItem key={icon.alt} index={i}>
-              <motion.img
-                src={icon.url}
-                alt={icon.alt}
-                draggable={false}
-                className="h-12 select-none md:h-20"
-              />
-            </MarqueeItem>
+            <MarqueeItem key={icon.alt} index={i} icon={icon} />
           ))}
         </SimpleMarquee>
-        <div className="from-fill absolute bottom-0 left-0 z-30 h-full w-36 bg-gradient-to-r sm:w-56" />
-        <div className="from-fill absolute right-0 bottom-0 z-30 h-full w-36 bg-gradient-to-l sm:w-56" />
       </div>
     </div>
   )
@@ -332,23 +315,84 @@ function Projects({ projects }: { projects: Project[] }) {
   )
 }
 
-const MarqueeItem = ({
-  children,
-  index,
-}: {
-  children: React.ReactNode
-  index: number
-}) => (
-  <motion.div
-    className="mx-16 flex rotate-y-45 rotate-z-12 flex-col items-center justify-center p-2 perspective-near transform-3d sm:p-3 md:p-4"
-    initial={{ opacity: 0, y: 0, filter: 'blur(10px)' }}
-    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-    transition={{ duration: 0.5, ease: 'easeOut', delay: 0.3 + 0.1 * index }}
-    style={{
-      transform: `translateZ(-150px) rotate(${index * 15}deg)`,
-      transformStyle: 'preserve-3d',
-    }}
-  >
-    {children}
-  </motion.div>
-)
+const MarqueeItem = ({ icon, index }: { icon: Icon; index: number }) => {
+  const variants = {
+    initial: {
+      y: '0px',
+      x: '0px',
+      scale: 1,
+      opacity: 1,
+    },
+    hover: {
+      y: '-12px',
+      x: '-12px',
+      scale: 1.05,
+      transition: {
+        duration: 0.15,
+        ease: 'easeOut',
+      },
+    },
+  }
+
+  const textVariants = {
+    initial: {
+      opacity: 0,
+    },
+    hover: {
+      opacity: 1,
+      transition: {
+        duration: 0.15,
+        ease: 'easeOut',
+      },
+    },
+  }
+
+  const imageVariants = {
+    initial: {
+      opacity: 1,
+    },
+    hover: {
+      opacity: 0.45,
+      transition: {
+        duration: 0.15,
+        ease: 'easeOut',
+      },
+    },
+  }
+
+  const containerClasses = cn(
+    'mx-2 sm:mx-3 md:mx-4',
+    'h-16 w-32 sm:h-20 sm:w-40 md:h-24 md:w-48',
+    'relative flex',
+    'flex-col transform-gpu'
+  )
+
+  const textContainerClasses = cn(
+    'p-2 sm:p-2.5 md:p-3 h-full flex flex-col item-center justify-center',
+    'leading-tight'
+  )
+
+  const imageClasses = cn('object-contain w-full h-full absolute')
+
+  return (
+    <motion.div
+      className={containerClasses}
+      initial="initial"
+      whileHover="hover"
+      variants={variants}
+    >
+      <motion.div className={textContainerClasses} variants={textVariants}>
+        <h3 className="z-30 text-xl font-medium text-white md:text-3xl">
+          {icon.alt}
+        </h3>
+      </motion.div>
+      <motion.img
+        src={icon.url}
+        alt={icon.alt}
+        draggable={false}
+        className={imageClasses}
+        variants={imageVariants}
+      />
+    </motion.div>
+  )
+}
