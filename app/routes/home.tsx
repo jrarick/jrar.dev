@@ -2,31 +2,10 @@ import type { Route } from './+types/home'
 import '../styles/hero.css'
 import { InView } from '~/components/motion/in-view'
 import { TextEffect } from '~/components/motion/text-effect'
-import d3Icon from '~/assets/d3-icon.svg?url'
-import figmaIcon from '~/assets/figma-icon.svg?url'
-import gsapIcon from '~/assets/gsap-icon.svg?url'
-import nextjsIcon from '~/assets/nextjs-icon.svg?url'
-import playwrightIcon from '~/assets/playwright-icon.svg?url'
-import postgresIcon from '~/assets/postgres-icon.svg?url'
-import pythonIcon from '~/assets/python-icon.svg?url'
-import reactIcon from '~/assets/react-icon.svg?url'
-import reactRouterIcon from '~/assets/react-router-icon.svg?url'
-import sanityIcon from '~/assets/sanity-icon.svg?url'
-import supabaseIcon from '~/assets/supabase-icon.svg?url'
-import tailwindIcon from '~/assets/tailwind-icon.svg?url'
-import viteIcon from '~/assets/vite-icon.svg?url'
-import remixIcon from '~/assets/remix-icon.svg?url'
-import motionIcon from '~/assets/motion-icon.svg?url'
-import nodejsIcon from '~/assets/nodejs-icon.svg?url'
-import tanstackIcon from '~/assets/tanstack-icon.svg?url'
-import prismaIcon from '~/assets/prisma-icon.svg?url'
-import typescriptIcon from '~/assets/typescript-icon.svg?url'
-import robotOnComputer from '~/assets/robot-on-computer.jpeg?url'
 import PixelTrail from '~/components/motion/pixel-trail'
 import { listAllProjects } from '~/lib/project.server'
 import type { Project } from '~/types/project'
 import { Link } from 'react-router'
-import { useEffect, useRef, useState } from 'react'
 import SimpleMarquee from '~/components/motion/simple-marquee'
 import { motion } from 'motion/react'
 import { cn } from '~/lib/utils'
@@ -37,25 +16,25 @@ type Icon = {
 }
 
 const icons = [
-  { url: d3Icon, alt: 'D3.js' },
-  { url: figmaIcon, alt: 'Figma' },
-  { url: gsapIcon, alt: 'GSAP' },
-  { url: nextjsIcon, alt: 'Next.js' },
-  { url: playwrightIcon, alt: 'Playwright' },
-  { url: postgresIcon, alt: 'Postgres' },
-  { url: pythonIcon, alt: 'Python' },
-  { url: reactIcon, alt: 'React' },
-  { url: reactRouterIcon, alt: 'React Router' },
-  { url: sanityIcon, alt: 'Sanity' },
-  { url: supabaseIcon, alt: 'Supabase' },
-  { url: tailwindIcon, alt: 'Tailwind' },
-  { url: viteIcon, alt: 'Vite' },
-  { url: remixIcon, alt: 'Remix' },
-  { url: motionIcon, alt: 'Framer Motion' },
-  { url: nodejsIcon, alt: 'Node.js' },
-  { url: tanstackIcon, alt: 'Tanstack' },
-  { url: prismaIcon, alt: 'Prisma' },
-  { url: typescriptIcon, alt: 'TypeScript' },
+  { url: '/assets/d3-icon.svg', alt: 'D3.js' },
+  { url: '/assets/figma-icon.svg', alt: 'Figma' },
+  { url: '/assets/gsap-icon.svg', alt: 'GSAP' },
+  { url: '/assets/nextjs-icon.svg', alt: 'Next.js' },
+  { url: '/assets/playwright-icon.svg', alt: 'Playwright' },
+  { url: '/assets/postgres-icon.svg', alt: 'Postgres' },
+  { url: '/assets/python-icon.svg', alt: 'Python' },
+  { url: '/assets/react-icon.svg', alt: 'React' },
+  { url: '/assets/react-router-icon.svg', alt: 'React Router' },
+  { url: '/assets/sanity-icon.svg', alt: 'Sanity' },
+  { url: '/assets/supabase-icon.svg', alt: 'Supabase' },
+  { url: '/assets/tailwind-icon.svg', alt: 'Tailwind' },
+  { url: '/assets/vite-icon.svg', alt: 'Vite' },
+  { url: '/assets/remix-icon.svg', alt: 'Remix' },
+  { url: '/assets/motion-icon.svg', alt: '(Framer) Motion' },
+  { url: '/assets/nodejs-icon.svg', alt: 'Node.js' },
+  { url: '/assets/tanstack-icon.svg', alt: 'Tanstack' },
+  { url: '/assets/prisma-icon.svg', alt: 'Prisma' },
+  { url: '/assets/typescript-icon.svg', alt: 'TypeScript' },
 ]
 
 const firstHalfIcons = icons.slice(0, Math.floor(icons.length / 2))
@@ -197,13 +176,13 @@ function Hero() {
 
 function TechnologiesSlider() {
   return (
-    <div className="relative flex h-[48rem] w-dvw flex-col items-center justify-center overflow-hidden sm:h-[56rem] md:h-[72rem]">
+    <div className="relative flex h-[48rem] w-dvw flex-col items-center justify-center overflow-hidden sm:h-[56rem] md:h-[82rem]">
       <h2 className="text-accent absolute top-1/4 text-center text-3xl font-semibold sm:text-5xl md:text-6xl">
         The Tools I Use
       </h2>
 
       <div
-        className="absolute top-0 -left-3/4 flex h-full w-[200%] flex-col items-center justify-center gap-y-24 perspective-near"
+        className="absolute top-0 -left-3/4 flex h-full w-[200%] flex-col items-center justify-center gap-y-24 perspective-near md:-mt-24 md:gap-y-36"
         style={{
           transform:
             'rotateX(45deg) rotateY(-15deg) rotateZ(35deg) translateZ(-200px)',
@@ -257,7 +236,7 @@ function Projects({ projects }: { projects: Project[] }) {
             <figure>
               <img
                 alt="Robot on typing on a computer in a candle lit room"
-                src={robotOnComputer}
+                src="/assets/robot-on-computer.jpeg"
                 className="bg-fill mt-16 aspect-6/5 w-full rounded-2xl object-cover lg:aspect-auto lg:h-[34.5rem]"
               />
               <figcaption className="text-muted mt-3 w-full text-center text-sm">
